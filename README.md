@@ -2,6 +2,10 @@
 
 These formulae are applications written in Python that are not provided by Homebrew.
 
+Note: This is meant to provide an easy repository for python packages that 
+provide binaries and are normally installed at a system level anyway. It should
+*not* be used in place of virtualenvs.
+
 ## Installation
 
 ```bash
