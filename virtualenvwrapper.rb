@@ -33,10 +33,6 @@ class Virtualenvwrapper < Formula
       Pbr.new.brew { system python, *install_args }
       system python, "setup.py", "install", "--prefix=#{prefix}"
     end
-
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
   end
 
   def caveats; <<-EOS.undent
