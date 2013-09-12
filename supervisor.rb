@@ -131,8 +131,8 @@ class Supervisor < Formula
       Meld3.new.brew { system python, *install_args }
 
       system python, "setup.py", "install", "--prefix=#{prefix}",
-      "--single-version-externally-managed",
-        "--record=installed.txt"
+                                            "--single-version-externally-managed",
+                                            "--record=installed.txt"
     end
 
     (prefix+'supervisord.conf').write supervisord_conf
