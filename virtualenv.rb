@@ -5,7 +5,7 @@ class Virtualenv < Formula
   url 'https://github.com/pypa/virtualenv/archive/1.10.1.tar.gz'
   sha1 'f41b3ed5eafedf717457e140a018b1e6b59d7cc0'
 
-  head 'https://github.com/django/django.git', :branch => :develop
+  head 'https://github.com/pypa/virtualenv.git', :branch => :develop
 
   depends_on :python
 
