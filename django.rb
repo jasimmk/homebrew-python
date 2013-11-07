@@ -2,8 +2,8 @@ require 'formula'
 
 class Django < Formula
   homepage 'https://www.djangoproject.com/'
-  url 'https://github.com/django/django/archive/1.5.4.tar.gz'
-  sha1 '567d727473bc12c5f2ce122c8d649e28be0f3a0b'
+  url 'https://github.com/django/django/archive/1.6.tar.gz'
+  sha1 '9686e54a37de83755d76cbfeeacdc3e20c88b608'
 
   head 'https://github.com/django/django.git', :branch => :master
 
