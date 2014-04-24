@@ -1,43 +1,32 @@
 require 'formula'
 
-class Jinja < Formula
-  url 'https://github.com/mitsuhiko/jinja2/archive/2.7.1.zip'
-  sha1 '470da2e98fbc50417f6f1246e3bdfc4f01da7265'
-end
-
 class Honcho < Formula
   homepage 'https://pypi.python.org/pypi/honcho'
-  url 'https://github.com/nickstenning/honcho/archive/v0.4.2.zip'
-  sha1 'bf663b7425c06a0b803dd294a9be190805a7e70d'
+  url 'https://github.com/nickstenning/honcho/archive/v0.5.0.tar.gz'
+  sha1 '28f9baf0d529748ae2555115a938f15dbd3c1184'
 
   head 'https://github.com/nickstenning/honcho.git', :branch => :master
 
   depends_on :python
 
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
+  resource 'jinja' do
+    url 'https://github.com/mitsuhiko/jinja2/archive/2.7.2.tar.gz'
+    sha1 'fc41fbc9270420514fae4d099c7e0e11cd9c64ad'
   end
 
+
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    python do
-      Jinja.new.brew { system python, *install_args }
+    resource('jinja').stage { system "python", *install_args }
 
-      system python, "setup.py", "install", "--prefix=#{prefix}",
-                                            "--single-version-externally-managed",
-                                            "--record=installed.txt"
-    end
+    system "python", "setup.py", "install"
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+  end
 
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
+  test do
+    system "#{bin}/honcho", "--version"
   end
 end

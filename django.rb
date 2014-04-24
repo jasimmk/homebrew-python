@@ -2,31 +2,21 @@ require 'formula'
 
 class Django < Formula
   homepage 'https://www.djangoproject.com/'
-  url 'https://github.com/django/django/archive/1.6.tar.gz'
-  sha1 '9686e54a37de83755d76cbfeeacdc3e20c88b608'
+  url 'https://github.com/django/django/archive/1.6.3.tar.gz'
+  sha1 '7786fadfd28bdb55b7a13aeb23562b756959b1ce'
 
   head 'https://github.com/django/django.git', :branch => :master
 
   depends_on :python
 
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
+  def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-    end
-
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
+  test do
+    system "#{bin}/django-admin.py", "--version"
   end
 end
