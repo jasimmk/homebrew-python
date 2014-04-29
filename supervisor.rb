@@ -17,6 +17,7 @@ class Supervisor < Formula
 
   head 'https://github.com/Supervisor/supervisor.git', :branch => :master
 
+  depends_on :python
 
   def patches
     # adds MANIFEST.in file to include needed files.
@@ -161,11 +162,3 @@ class Supervisor < Formula
     cp prefix+'supervisord.conf', etc unless File.exists? etc+"supervisord.conf"
   end
 end
-
-__END__
-diff --git a/MANIFEST.in b/MANIFEST.in
-index e69de29..fc34935 100644
---- a/MANIFEST.in
-+++ b/MANIFEST.in
-@@ -0,0 +1 @@
-+recursive-include supervisor *.txt *.html *.css *.gif
