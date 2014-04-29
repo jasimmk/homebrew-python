@@ -17,7 +17,6 @@ class Supervisor < Formula
 
   head 'https://github.com/Supervisor/supervisor.git', :branch => :master
 
-  depends_on :python
 
   def patches
     # adds MANIFEST.in file to include needed files.
